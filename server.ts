@@ -1,10 +1,11 @@
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
 import embedHandler from './api/embed.ts';
 import analyzeHandler from './api/analyze.ts';
 import briefHandler from './api/brief.ts';
+import sampleDataHandler from './api/sample-data.ts';
+import statusHandler from './api/status.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,28 +30,12 @@ async function startServer() {
     await briefHandler(req, res);
   });
 
-  // Helper endpoint to load all sample docs and sample change at once
   app.get('/api/sample-data', (req, res) => {
-    try {
-      const docsDir = path.join(__dirname, 'public', 'docs');
-      const files = fs.readdirSync(docsDir).filter((f) => f.endsWith('.md'));
-      const docs = files.map((file) => {
-        const fullPath = path.join(docsDir, file);
-        const content = fs.readFileSync(fullPath, 'utf-8');
-        return { filename: file, content };
-      });
+    sampleDataHandler(req, res);
+  });
 
-      const sampleChangePath = path.join(__dirname, 'data', 'sample-change.txt');
-      let sampleChange = '';
-      if (fs.existsSync(sampleChangePath)) {
-        sampleChange = fs.readFileSync(sampleChangePath, 'utf-8');
-      }
-
-      return res.status(200).json({ docs, sampleChange });
-    } catch (e: any) {
-      console.error('Error loading sample data:', e);
-      return res.status(500).json({ error: 'Failed to load sample docs from disk.' });
-    }
+  app.get('/api/status', (req, res) => {
+    statusHandler(req, res);
   });
 
   if (!isProduction) {
