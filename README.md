@@ -27,18 +27,6 @@ When a product changes (a pull request, commit log, or ticket), **DriftWatch** f
 
 ---
 
-## 🖼️ Screenshots
-
-| Radar | Report Change |
-|---|---|
-| ![Radar](docs/images/radar.png) | ![Report Change](docs/images/report.png) |
-
-| Review | Export |
-|---|---|
-| ![Review](docs/images/review.png) | ![Export](docs/images/export.png) |
-
----
-
 ## ❗ The Problem
 
 Product changes faster than documentation. A renamed flag or a new default can quietly make several help pages wrong, and nobody notices until a customer does.
