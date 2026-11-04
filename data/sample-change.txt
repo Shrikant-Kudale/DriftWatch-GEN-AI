@@ -1,0 +1,13 @@
+PR #142: Update snapshot retention defaults and add restore simulation
+
+Summary of Changes:
+1. Default retention window reduced from 30 days to 14 days across all repositories to align with compliance guidelines and reduce unnecessary cloud storage expenses.
+2. CLI flag `--keep-days` has been renamed to `--retain` across `vaultlite backup` and scheduler configurations for naming clarity. The old flag is deprecated with a warning.
+3. Added `--dry-run` flag to `vaultlite restore` command: allows users to preview files that would be extracted or overwritten without performing any disk write operations.
+4. Added validation check in `src/restore.py` to notify when target destination files already exist during dry run.
+
+Touched source files:
+- src/retention.py
+- src/backup.py
+- src/restore.py
+- src/cli.py

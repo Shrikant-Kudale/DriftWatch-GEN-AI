@@ -1,0 +1,8 @@
+{
+  "name": "DriftWatch",
+  "description": "Detects stale documentation pages after a product change, proposes fixes, and requires human approval before exporting a Git patch.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

@@ -1,0 +1,67 @@
+name: DriftWatch Documentation Drift Check
+
+on:
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - 'src/**'
+      - 'public/docs/**'
+      - 'docs/**'
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  check-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: Run DriftWatch Staleness Check
+        id: drift
+        run: |
+          # Compare PR head to target base branch
+          python3 scripts/drift_check.py --base "origin/${{ github.base_ref }}" > drift_report.txt 2>&1 || echo "DRIFT_FAILED=1" >> $GITHUB_ENV
+          cat drift_report.txt
+
+      - name: Comment PR with DriftWatch Analysis
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          script: |
+            const fs = require('fs');
+            let report = 'No report generated.';
+            try {
+              report = fs.readFileSync('drift_report.txt', 'utf8');
+            } catch (e) {}
+
+            const statusEmoji = process.env.DRIFT_FAILED ? '⚠️' : '✅';
+            const body = `### ${statusEmoji} DriftWatch Automated Documentation Audit\n\n` +
+                         `\`\`\`text\n${report}\n\`\`\`\n\n` +
+                         `*Run DriftWatch locally or open the DriftWatch web portal to generate and approve documentation patches.*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });
+
+      - name: Fail if documentation is stale
+        if: env.DRIFT_FAILED == '1'
+        run: |
+          echo "Documentation drift detected! Some documentation pages require review."
+          exit 1
