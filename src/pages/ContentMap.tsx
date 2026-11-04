@@ -234,8 +234,8 @@ export const ContentMap: React.FC<ContentMapProps> = ({ onNavigate }) => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-            gap: '16px',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(360px, 1fr))',
+            gap: '20px',
           }}
         >
           {filteredPages.map((page) => {

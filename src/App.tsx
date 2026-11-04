@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavBar, type RouteKey } from './components/NavBar.tsx';
+import { GuideDrawer } from './components/GuideDrawer.tsx';
 import { ToastProvider } from './components/Toast.tsx';
 import { Radar } from './pages/Radar.tsx';
 import { ReportChange } from './pages/ReportChange.tsx';
@@ -22,6 +23,8 @@ export default function App() {
     if (candidate === 'guide') return 'guide';
     return 'radar';
   });
+
+  const [isGuideDrawerOpen, setIsGuideDrawerOpen] = useState(false);
 
   const [pendingReviewsCount, setPendingReviewsCount] = useState<number>(() => {
     return store.getProposals().filter((p) => !p.decision).length;
@@ -64,14 +67,15 @@ export default function App() {
   return (
     <ToastProvider>
       <div className="app-container">
-        {/* Top Navigation */}
+        {/* Top Navigation with Guide on the top right */}
         <NavBar
           currentRoute={route}
           onRouteChange={navigateTo}
+          onOpenGuide={() => setIsGuideDrawerOpen(true)}
           pendingReviewsCount={pendingReviewsCount}
         />
 
-        {/* Centered Main Content Area */}
+        {/* Expansive Main Content Area */}
         <main className="main-content" role="main">
           {route === 'radar' && (
             <Radar onNavigate={navigateTo} onRefreshState={handleRefreshState} />
@@ -88,6 +92,13 @@ export default function App() {
           )}
           {route === 'guide' && <Guide onNavigate={navigateTo} />}
         </main>
+
+        {/* Global Slide-Over Quick Guide Drawer */}
+        <GuideDrawer
+          isOpen={isGuideDrawerOpen}
+          onClose={() => setIsGuideDrawerOpen(false)}
+          onOpenFullGuide={() => navigateTo('guide')}
+        />
 
         {/* App Footer */}
         <footer className="app-footer" role="contentinfo">

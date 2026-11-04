@@ -8,13 +8,32 @@ export const Guide: React.FC<GuidePageProps> = ({ onNavigate }) => {
   return (
     <div>
       {/* Title */}
-      <div style={{ marginBottom: '24px' }}>
-        <h1 style={{ fontSize: '1.75rem', fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
-          DriftWatch Operating Guide
-        </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginTop: '4px' }}>
-          Workflow handbook, retrieval architecture, glossary of key concepts, and accuracy limitations.
-        </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
+        <div>
+          <h1 style={{ fontSize: '1.875rem', fontWeight: 800, letterSpacing: '-0.03em', color: 'var(--text-main)' }}>
+            DriftWatch Operating Guide & Handbook
+          </h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.9375rem', marginTop: '4px' }}>
+            Workflow handbook, retrieval architecture, glossary of key concepts, and accuracy limitations.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => onNavigate('radar')}
+          >
+            ← View Radar
+          </button>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => onNavigate('report')}
+          >
+            Report Change →
+          </button>
+        </div>
       </div>
 
       {/* 5-Step How-To */}
