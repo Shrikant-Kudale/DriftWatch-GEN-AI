@@ -261,7 +261,7 @@ The script lists documentation pages whose `source_files` front matter matches t
 - [ ] Retrieval evaluation set with hit-rate scoring
 - [ ] Direct pull request creation through the GitHub API
 - [ ] Support for DITA and static site generators
-
+Framework followed
 ---
 
 <div align="center">
